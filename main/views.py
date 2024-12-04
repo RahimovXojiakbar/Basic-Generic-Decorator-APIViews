@@ -12,6 +12,7 @@ from . import serializers as ser
 from . import models as md
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
+from rest_framework.filters import SearchFilter
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -20,6 +21,8 @@ class WeatherAPIView(APIView):
     def get(self, request, format=None):
         model = md.WeatherModel.objects.all()
         serializer = ser.WeatherSerializer(model, many=True)
+
+
         
         return Response(serializer.data)
 
@@ -34,6 +37,9 @@ class WeatherGenericView(ListAPIView):
     queryset = md.WeatherModel.objects.all()
     serializer_class = ser.WeatherSerializer
     pagination_class = Pagination
+    filter_backends = [SearchFilter]
+    search_fields = ['city']
+
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
